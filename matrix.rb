@@ -12,8 +12,7 @@ class Matrix
     print_header
 
     @matrix.each do |row|
-      print_lead_colummn_element(row.first)
-      print_row(row.drop(1))
+      print_row(row.drop(1), row.first)
     end
   end
 
@@ -26,11 +25,14 @@ class Matrix
   end
 
   def print_header
-    print format(' '), @delimiter, *@header.map { |el| format(el) }, "\n"
-    print '-' * (@header.size + 1) * (@column_width + @border_width), "\n"
+    print_row(@header)
+
+    row_size = (@header.size + 1) * (@column_width + @border_width)
+    print '-' * row_size, "\n"
   end
 
-  def print_row(row)
+  def print_row(row, lead_element = ' ')
+    print_lead_colummn_element(lead_element)
     print *row.map { |element| format(element) }, "\n"
   end
 
