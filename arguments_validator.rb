@@ -12,7 +12,7 @@ module ArgumentsValidator
   end
 
   def valid_count?
-    return true # if @permitted_arguments[:count].is_a? Numeric
-    raise ArgumentError, 'Non numeric value passed for count'
+    return true if @permitted_arguments[:count].to_i > 0
+    raise ArgumentError, 'Value of count should evaluate to non zero number'
   end
 end
