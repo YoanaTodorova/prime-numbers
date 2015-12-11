@@ -9,14 +9,17 @@ class Matrix
   end
 
   def print_matrix
-    print_header
-
-    @matrix.each do |row|
-      print_row(row.drop(1), row.first)
-    end
+    print printable_matrix
   end
 
   private
+
+  def printable_matrix
+    [
+      header,
+      @matrix.map { |row| printable_row(row.drop(1), row.first) }
+    ].flatten.join('')
+  end
 
   def build_matrix
     @matrix = @header.map.with_index do |element, index|
@@ -24,20 +27,29 @@ class Matrix
     end
   end
 
-  def print_header
-    print_row(@header)
-
+  def header
     row_size = (@header.size + 1) * (@column_width + @border_width)
-    print '-' * row_size, "\n"
+
+    [
+      printable_row(@header),
+      '-' * row_size,
+      "\n"
+    ]
   end
 
-  def print_row(row, lead_element = ' ')
-    print_lead_colummn_element(lead_element)
-    print *row.map { |element| format(element) }, "\n"
+  def printable_row(row, lead_element = ' ')
+    [
+      lead_colummn_element(lead_element),
+      *row.map { |element| format(element) },
+      "\n"
+    ]
   end
 
-  def print_lead_colummn_element(element)
-    print format(element), @delimiter
+  def lead_colummn_element(element)
+    [
+      format(element),
+      @delimiter
+    ]
   end
 
   def format(element)
