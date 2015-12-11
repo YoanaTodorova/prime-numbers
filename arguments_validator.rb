@@ -1,18 +1,21 @@
 module ArgumentsValidator
-  def permit_arguments(arguments, accepted_arguments_list)
-    arguments = Hash[*arguments]
-    @permitted_arguments = arguments.select { |k, _| accepted_arguments_list.include? k.gsub(/^-+/, '').to_sym }
-    @permitted_arguments = @permitted_arguments.map { |key, value| [key.gsub(/^-+/, '').to_sym, value] }.to_h
+  def permit(keys: [], from: [])
+    permitted_arguments = normalize_keys(from)
+      .select { |key, _| keys.include? key }
 
-    @permitted_arguments.keys.each { |arg| public_send("set_#{arg}") }
+    permitted_arguments.each { |key, value| public_send("set_#{key}", value) }
   end
 
-  def set_count
-    @count = @permitted_arguments[:count].to_f if valid_count?
+  def set_count(value)
+    @count = value.to_f if valid_count?(value)
   end
 
-  def valid_count?
-    return true if @permitted_arguments[:count].to_i > 0
+  def valid_count?(value)
+    return true if value.to_i > 0
     raise ArgumentError, 'Value of count should evaluate to non zero number'
+  end
+
+  def normalize_keys(arguments)
+    Hash[*arguments].map { |key, value| [key.gsub(/^-+/, ''), value] }.to_h
   end
 end

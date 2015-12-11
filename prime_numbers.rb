@@ -5,6 +5,5 @@ if ARGV.size != 2
 else
   generator = PrimeNumbersMultiplicationGenerator.new(ARGV)
 
-  generator.perform
   generator.print_matrix
 end

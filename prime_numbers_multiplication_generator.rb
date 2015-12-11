@@ -6,20 +6,19 @@ class PrimeNumbersMultiplicationGenerator
   include ArgumentsValidator
 
   def initialize(arguments)
-    permit_arguments(arguments, [:count])
+    permit keys: ['count'], from: arguments
 
     @primes = PrimeNumbersSequence.first(@count)
-  end
-
-  def perform
-    @matrix = @primes.map do |row_number|
-      @primes.map do |column_number|
-        row_number * column_number
-      end
-    end
+    @matrix = Matrix.new(header: @primes)
   end
 
   def print_matrix
-    Matrix.new(header: @primes).print_matrix
+    print printable_matrix
+  end
+
+  private
+
+  def printable_matrix
+    @matrix.printable_matrix
   end
 end

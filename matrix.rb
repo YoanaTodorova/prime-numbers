@@ -8,18 +8,14 @@ class Matrix
     @matrix = build_matrix
   end
 
-  def print_matrix
-    print printable_matrix
-  end
-
-  private
-
   def printable_matrix
     [
       header,
       @matrix.map { |row| printable_row(row.drop(1), row.first) }
     ].flatten.join('')
   end
+
+  private
 
   def build_matrix
     @matrix = @header.map.with_index do |element, index|
